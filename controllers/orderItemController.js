@@ -5,11 +5,12 @@ import { Product } from "../models/productmodel.js";
 
 export const createOrderItem = async (req, res) => {
   try {
-    const { productId, quantity } = req.body;
+    let { productId, quantity } = req.body;
     const product = await Product.findOne({ _id: productId });
     if (!product) {
       throw new CustomError.notFound("Product was not found");
     }
+    quantity = quantity > product.stock ? product.stock : quantity;
     let orderItem;
     orderItem = await OrderItem.findOne({
       productId: product._id,

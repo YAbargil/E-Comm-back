@@ -2,7 +2,13 @@ import { Order } from "../models/ordermodel.js";
 import { StatusCodes } from "http-status-codes";
 import { CustomError } from "../errors/totalErrors.js";
 import { calculateTotalOrderItems } from "./orderItemController.js";
+import { notifyOrder } from "../utils/notifier.js";
 
+// export const sendEmail = async (req, res) => {
+//   const order = await Order.findOne({ _id: req.params.id });
+//   res.send({ msg: "good" });
+//   await notifyOrder(order);
+// };
 export const createOrder = async (req, res) => {
   try {
     const result = await calculateTotalOrderItems(res.user._id);
@@ -23,6 +29,8 @@ export const createOrder = async (req, res) => {
     });
     await order.save();
     res.status(StatusCodes.CREATED).send({ order });
+    //sends email
+    await notifyOrder(order);
   } catch (err) {
     console.log(err);
     if (err.statusCode) {
