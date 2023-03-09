@@ -29,24 +29,22 @@ export const login = async (req, res) => {
     }
     const user = await User.findOne({ email });
     if (!user) {
-      throw new CustomError.notFound("User not found");
+      throw new CustomError.notFound("Invalid credentials");
     }
     const isMatched = await bcrpyt.compare(password, user.password);
     if (!isMatched) {
       throw new CustomError.badRequest("Invalid credentials");
     }
     const token = createToken(user);
-    res
-      .status(StatusCodes.OK)
-      .send({
-        user: {
-          _id: user._id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
-        },
-        token,
-      });
+    res.status(StatusCodes.OK).send({
+      user: {
+        _id: user._id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      },
+      token,
+    });
   } catch (err) {
     res.status(err.statusCode).send({ msg: err.message });
   }

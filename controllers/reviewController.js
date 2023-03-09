@@ -3,6 +3,27 @@ import { Product } from "../models/productmodel.js";
 import { CustomError } from "../errors/totalErrors.js";
 import { StatusCodes } from "http-status-codes";
 
+export const getAllReviews = async (req, res) => {
+  try {
+    const reviews = await Review.find({ userId: res.user._id });
+    // .populate({
+    //   path: "productId",
+    //   select: "title",
+    // })
+    // .exec();
+
+    if (reviews.length === 0) {
+      throw new CustomError.notFound("No reviews found.");
+    }
+    res.status(StatusCodes.OK).send({ reviews });
+  } catch (err) {
+    if (err.StatusCodes) {
+      res.status(err.statusCode).send({ msg: err.message });
+    } else {
+      res.status(400).send({ msg: err.message });
+    }
+  }
+};
 export const addReview = async (req, res) => {
   try {
     const { title, description, rating, productId } = req.body;

@@ -28,39 +28,6 @@ const reviewSchema = mongoose.Schema(
   { timestamps: true, toJSON: { virtuals: true }, id: false }
 );
 
-// reviewSchema.statics.calculateReviews = async function (productId) {
-//   const result = await this.aggregate([
-//     {
-//       $group: {
-//         _id: "$productId",
-//         numOfReviews: {
-//           $count: {},
-//         },
-//         avgRating: {
-//           $avg: "$rating",
-//         },
-//       },
-//     },
-//     {
-//       $project: {
-//         _id: 0,
-//       },
-//     },
-//   ]);
-//   console.log(result);
-//   try {
-//     await this.model("Product").findOneAndUpdate(
-//       { _id: productId },
-//       {
-//         averageRating: Math.round(result[0].avgRating),
-//         numOfReviews: result[0].numOfReviews,
-//       }
-//     );
-//   } catch (err) {
-//     console.log("ERROR:", err);
-//   }
-// };
-
 reviewSchema.methods.calculateReviews = async function () {
   const productId = this.productId;
 
@@ -93,6 +60,7 @@ reviewSchema.methods.calculateReviews = async function () {
     averageRating: Math.round(result[0].avgRating),
     numOfReviews: result[0].numOfReviews,
   };
+  console.log(stats);
 
   await this.model("Product").findOneAndUpdate({ _id: productId }, stats);
 };

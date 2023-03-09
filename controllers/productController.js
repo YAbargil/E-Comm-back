@@ -27,12 +27,20 @@ export const addProduct = async (req, res) => {
     await product.save();
     res.status(StatusCodes.CREATED).send({ product });
   } catch (err) {
+    console.log(err);
     res.status(err.statusCode).send({ msg: err.message });
   }
 };
 
 export const getSingleProduct = async (req, res) => {
-  const product = await res.product.populate("reviews");
+  const populate = {
+    path: "reviews",
+    populate: {
+      path: "userId",
+      select: "name",
+    },
+  };
+  const product = await res.product.populate(populate);
   res.status(StatusCodes.OK).send({ product });
 };
 

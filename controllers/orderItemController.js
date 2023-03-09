@@ -19,6 +19,7 @@ export const createOrderItem = async (req, res) => {
     if (!orderItem) {
       orderItem = new OrderItem({
         itemName: product.title,
+        itemBrand: product.brand,
         quantity,
         itemPrice: product.price,
         image: product.images[0],
@@ -38,6 +39,7 @@ export const createOrderItem = async (req, res) => {
 export const deleteOrderItem = async (req, res) => {
   try {
     const { productId } = req.body;
+    console.log("ProductId:", productId);
     const product = await Product.findOne({ _id: productId });
     if (!product) {
       throw new CustomError.notFound("Product was not found");
@@ -53,7 +55,7 @@ export const deleteOrderItem = async (req, res) => {
     res
       .status(StatusCodes.ACCEPTED)
       .send({ orderItem, msg: "Order item was removed" });
-  } catch (error) {
+  } catch (err) {
     res.status(err.statusCode).send({ msg: err.message });
   }
 };

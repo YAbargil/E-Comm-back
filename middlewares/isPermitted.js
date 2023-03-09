@@ -9,6 +9,7 @@ export const rolesPermitted =
       }
       next();
     } catch (err) {
+      console.log(err);
       res.status(err.statusCode).send({ msg: err.message });
     }
   };

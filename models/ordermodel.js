@@ -7,6 +7,10 @@ const orderItemSchema = mongoose.Schema(
       type: String,
       required: [true, "please provide a value for buyer name"],
     },
+    itemBrand: {
+      type: String,
+      required: [true, "please provide a value for item brand"],
+    },
     quantity: {
       type: Number,
       required: [true, "please provide a value for item quantity"],

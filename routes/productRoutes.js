@@ -12,7 +12,7 @@ import { rolesPermitted } from "../middlewares/isPermitted.js";
 const productRouter = Router();
 
 productRouter.get("/", getProducts);
-productRouter.post("/add", rolesPermitted("admin"), addProduct);
+productRouter.post("/add", addProduct);
 productRouter
   .route("/:id")
   .get(isProductExists, getSingleProduct)

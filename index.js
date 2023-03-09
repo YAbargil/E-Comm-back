@@ -22,7 +22,7 @@ app.use(express.static("public"));
 
 app.use("/api/auth", authRouter);
 app.use("/api/users", isAuthorized, userRouter);
-app.use("/api/products", isAuthorized, productRouter);
+app.use("/api/products", productRouter);
 app.use("/api/reviews", isAuthorized, reviewRouter);
 app.use("/api/orderitems", isAuthorized, orderitemRoutes);
 app.use("/api/orders", isAuthorized, orderRouter);
