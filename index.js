@@ -30,8 +30,8 @@ app.use("/api/orders", isAuthorized, orderRouter);
 const start = async () => {
   try {
     await connectDB(url);
-    app.listen(port, "localhost", () => {
-      console.log("Server up and running at http://localhost:3001");
+    app.listen(port, () => {
+      console.log(`Server up and running at ${port}`);
     });
   } catch (error) {
     console.log(error);
