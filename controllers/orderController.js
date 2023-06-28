@@ -65,12 +65,13 @@ export const updateOrderStatus = async (req, res) => {
     if (status === order.status) {
       throw CustomError.badRequest("Cant change to same value");
     }
+    await updatedOrder.validate();
     const updatedOrder = await Order.findOneAndUpdate(
       { _id: req.params.id },
       { status },
       { new: true }
     );
-    await updatedOrder.validate();
+
     res.status(StatusCodes.CREATED).send({ order: updatedOrder });
   } catch (err) {
     if (err.StatusCodes) {
