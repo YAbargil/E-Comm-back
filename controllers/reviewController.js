@@ -17,7 +17,7 @@ export const getAllReviews = async (req, res) => {
     }
     res.status(StatusCodes.OK).send({ reviews });
   } catch (err) {
-    if (err.StatusCodes) {
+    if (err.statusCode) {
       res.status(err.statusCode).send({ msg: err.message });
     } else {
       res.status(400).send({ msg: err.message });
@@ -41,10 +41,11 @@ export const addReview = async (req, res) => {
       productId,
       userId: res.user._id,
     });
+    //triggers save pre-hook
     await review.save();
     res.status(StatusCodes.OK).send({ review });
   } catch (err) {
-    if (err.StatusCodes) {
+    if (err.statusCode) {
       res.status(err.statusCode).send({ msg: err.message });
     } else {
       res.status(400).send({ msg: err.message });
@@ -63,6 +64,8 @@ export const getReview = async (req, res) => {
 export const deleteReview = async (req, res) => {
   try {
     const review = res.review;
+
+    //triggers remove pre-hook
     await review.remove();
     res.status(StatusCodes.OK).send({ msg: "removed" });
   } catch (err) {
